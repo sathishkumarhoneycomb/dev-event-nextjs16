@@ -2,12 +2,14 @@ import {NextRequest, NextResponse} from "next/server";
 import {Event} from "@/database/index";
 import {v2 as cloudinary} from "cloudinary";
 import connectDB from "@/lib/mongodb";
+import { revalidateTag } from "next/cache";
 
 
 export  async function POST(req: NextRequest){
     try {
         await connectDB();
 
+        revalidateTag('events', "max");
         const formData = await req.formData();
         let event;
         try {
