@@ -1,26 +1,14 @@
 import ExploreBtn from "@/component/ExploreBtn";
 import EventCard from "@/component/EventCard";
 import { IEvent } from "@/database";
-import { cacheLife, cacheTag } from "next/cache";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+import { getEvents } from "@/lib/actions/event.action";
 
 const Home = async () => {
-    "use cache";
-    
-  let events = [];
-  try {
-    
-    cacheLife("hours");
-    cacheTag("events");
-    const res = await fetch(`${BASE_URL}/api/events`, {
-      next: { revalidate: 60 },
-    });
-    if (!res.ok) throw new Error("Failed to fetch events");
-    const data = await res.json();
-    events = data?.events || [];
-  } catch (error) {
-    console.log(error);
+  const { success, events } = await getEvents();
+  if (!success) {
+    console.log("Failed to fetch the events");
+    throw new Error("Failed to fetch events");
   }
 
   return (
