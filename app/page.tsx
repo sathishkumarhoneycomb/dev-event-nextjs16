@@ -3,9 +3,12 @@ import EventCard from "@/component/EventCard";
 import { IEvent } from "@/database";
 
 import { getEvents } from "@/lib/actions/event.action";
+import { cacheLife, cacheTag } from "next/cache";
 
 const Home = async () => {
     "use cache"
+    cacheLife('hours');
+    cacheTag('events');
   const { success, events } = await getEvents();
   if (!success) {
     console.log("Failed to fetch the events");
