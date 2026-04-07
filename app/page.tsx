@@ -1,11 +1,19 @@
-import ExploreBtn from "@/component/explore-btn";
-import EventCard from "@/component/event-card";
-import {events} from "@/lib/constants";
+import ExploreBtn from "@/component/ExploreBtn";
+import EventCard from "@/component/EventCard";
+import {IEvent} from "@/database";
+import { cacheLife, cacheTag } from "next/cache";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 
-
-
-const Home = () => {
+const Home = async () => {
+    "use cache";
+    cacheLife('hours');
+    cacheTag('events');
+    const res = await fetch(`${BASE_URL}/api/events`);
+    if(!res.ok) throw new Error('Failed to fetch events');
+    const data = await res.json();
+    const events: IEvent[] = data?.events || []
 
     return (
         <section  >
@@ -14,13 +22,15 @@ const Home = () => {
             <ExploreBtn />
             <div className={'mt-20 space-y-7'}>
                 <h3> Featured Events </h3>
-                <ul className={'events'}>
+                <ul className={'events list-none'}>
                     {
-                        events.map((event) => (
+                        events.map((event: IEvent) => (
+                            <li key={event.title} >
                             <EventCard
-                                key={event.title}
+                                
                                 event={event}
-                            />
+                                />
+                                </li>
                         ))
                     }
 
