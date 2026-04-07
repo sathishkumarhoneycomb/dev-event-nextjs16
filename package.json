@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "babel-plugin-react-compiler": "^1.0.0",
+    "cloudinary": "^2.9.0",
+    "mongoose": "^9.3.3",
     "next": "16.2.2",
     "ogl": "^1.0.11",
     "posthog-js": "^1.364.5",
