@@ -5,7 +5,9 @@ import {Event} from "@/database/index";
 
 
 
+
 export const getEvents = async () => {
+    await connectDB();
     try {
         const events = await Event.find().sort({createdAt: -1});
         return {success: true, events: JSON.parse(JSON.stringify(events))};

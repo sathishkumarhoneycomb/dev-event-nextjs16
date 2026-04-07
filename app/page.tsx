@@ -5,10 +5,10 @@ import { IEvent } from "@/database";
 import { getEvents } from "@/lib/actions/event.action";
 
 const Home = async () => {
+    "use cache"
   const { success, events } = await getEvents();
   if (!success) {
     console.log("Failed to fetch the events");
-    throw new Error("Failed to fetch events");
   }
 
   return (
